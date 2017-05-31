@@ -5,6 +5,9 @@ angular.module('medicationReminderApp')
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
+    },{
+      'title': 'Missed Medications',
+      'link': '/index2.html'
     }];
 
     $scope.isCollapsed = true;

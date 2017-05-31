@@ -2,18 +2,34 @@
 
 <header class="hero-unit" id="banner">
   <div class="container">
-      <h1>{{currentTime}}</h1>
+      <h1>{{currentDate}}</h1>
+      <h2>{{currentTime}}</h2>
   </div>
 </header>
-<div class="container">
+<div ng-controller="MainCtrl as main" class="container">
   <div class="row">
-    <div class="col-lg-6 col-lg-offset-3 text-center">
-        <div ng-repeat="m in meds">
-            {{m.time}} {{m.name}} {{m.dosage}}
-        </div>
+    <div class="col-12 text-center" ng-repeat="m in meds | orderBy: ['-status','+parsedTime']"> <!-- Cycles through each medication in the 'meds' array, then order them by status and time in the respective order. -->
+      <div class="well well-sm"
+      ng-if="m.sameDay === true && m.status !== 'MISSED'"> <!-- Checks if the medication has been missed, if so the application does not display them. -->
+        <h4>{{m.name}}</h4>
+        <p><strong>Administer At: </strong>{{m.parsedTime}}</p>
+        <p><strong>Dosage Amount: </strong> {{m.dosage}}</p>
+        <p><strong>Status:</strong> 
+
+        <span ng-if="m.status === 'COMPLETED'" class="label label-success">{{m.status}}</span>
+        <span ng-if="m.status === 'PENDING'" class="label label-warning">{{m.status}}</span>
+
+        </p>
+        <button class="btn btn-success"
+        ng-click="main.markCompleted(m)"
+        ng-if="m.canMark === true && m.status != 'COMPLETED'">Mark Completed</button> <!-- Checks if the medication has not yet been completed and can be marked for completion. If so displays the button to each respective medication -->
+      </div>
     </div>
   </div>
-</div>
+
+
+</div> <!-- End of ng-controller="MainCtrl" -->
+
 <footer class="footer">
   <div class="container">
       <p>© 2016 Mavencare™, made with <span class="glyphicon glyphicon-heart heart-red"></span> for better healthcare.</p>
